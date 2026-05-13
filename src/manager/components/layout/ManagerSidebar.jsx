@@ -222,7 +222,7 @@ const ManagerSidebar = () => {
 
       {/* ===== POND LIST ===== */}
       <nav className="flex-1 px-2 py-3 overflow-y-auto">
-        {filteredPonds.map((pond) => (
+        {/* {filteredPonds.map((pond) => (
           <button
             key={pond.id}
             onClick={() => handlePondClick(pond.id)}
@@ -237,7 +237,38 @@ const ManagerSidebar = () => {
             <i className="bi bi-water text-base" />
             <span>{pond.name}</span>
           </button>
-        ))}
+        ))} */}
+        {filteredPonds.map((pond) => (
+  <div key={pond.id}>
+    
+    {/* Pond Button */}
+    <button
+      onClick={() => handlePondClick(pond.id)}
+      className={`w-full flex items-center justify-between px-3 py-2.5 mb-1 rounded-md text-sm font-medium transition
+        ${
+          activePond === pond.id
+            ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600"
+            : "text-gray-700 hover:bg-gray-50"
+        }
+      `}
+    >
+      <div className="flex items-center gap-3">
+        <i className="bi bi-water text-base" />
+        <span>{pond.name}</span>
+      </div>
+    </button>
+
+    {/* ✅ Show Schedule Button ONLY for selected pond */}
+    {activePond === pond.id && (
+      <button
+        className="w-full mb-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+        onClick={() => handleGenerate()}
+      >
+        Schedule
+      </button>
+    )}
+  </div>
+))}
 
         {/* ===== FILTER TOGGLE ===== */}
         <button
@@ -252,12 +283,12 @@ const ManagerSidebar = () => {
         </button>
 
         {/* ===== GENERATE ===== */}
-        <button
+        {/* <button
           className="w-full mt-3 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
           onClick={handleGenerate}
         >
           Generate
-        </button>
+        </button> */}
       </nav>
     </aside>
   );

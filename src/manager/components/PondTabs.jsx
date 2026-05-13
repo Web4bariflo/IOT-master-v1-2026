@@ -37,7 +37,7 @@ import { POND_TABS } from '../constants/PondTabs'
 const tabs = [
   { key: POND_TABS.FEEDING, label: "Feeding" },
   { key: POND_TABS.MAP, label: "Map" },
-  { key: POND_TABS.FARM, label: "Farm" },
+  { key: POND_TABS.FARM, label: "Farm Eye" },
   {key:POND_TABS.POWER_MON, label: "Power Mon"}
 ];
 

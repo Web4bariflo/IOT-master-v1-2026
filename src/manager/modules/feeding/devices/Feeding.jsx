@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useParams } from "react-router-dom";
 
@@ -142,7 +141,7 @@ const Feeding = () => {
           onClick={handleGenerate}
           disabled={tasks.length > 0}
           className={`px-4 py-1 text-xs rounded text-white
-        ${tasks.length > 0
+${tasks.length > 0
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-blue-600 hover:bg-blue-700"
             }`}
@@ -261,20 +260,12 @@ const Feeding = () => {
                           </td>
 
                           <td>
-                            <select
-                              className="border rounded px-2 h-7 text-xs"
+                            <input
+                              type="text"
                               value={computedRow.worker || ""}
-                              onChange={(e) =>
-                                updateTask(computedRow.taskId, "worker", e.target.value)
-                              }
-                            >
-                              <option value="">Select</option>
-                              {workers.map((w, i) => (
-                                <option key={i} value={w}>
-                                  {w}
-                                </option>
-                              ))}
-                            </select>
+                              readOnly
+                              className="border rounded px-2 h-7 text-xs bg-gray-100 w-16 text-center"
+                            />
                           </td>
 
                           <td>
@@ -297,7 +288,7 @@ const Feeding = () => {
 
                           <span
                             className={`px-2 py-0.5 rounded-full text-xs capitalize
-                          ${computedRow.status === "processing"
+${computedRow.status === "processing"
                                 ? "bg-yellow-100 text-yellow-700"
                                 : computedRow.status === "completed"
                                   ? "bg-green-100 text-green-700"
