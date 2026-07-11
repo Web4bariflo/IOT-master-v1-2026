@@ -256,7 +256,7 @@ const FarmCard = ({ task, feederImage }) => {
             </div>
 
             <p className="text-[11px] text-gray-500">
-              Applies to all feeders in feeding Module
+              CheckTray dashboard view
             </p>
           </div>
         </div>

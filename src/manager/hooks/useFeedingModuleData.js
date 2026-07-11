@@ -15,3 +15,13 @@ export const addWorker = async(workerData) => {
     throw err;
   }
 }
+
+export const getWorkersByPond = async(pondId) => {
+  try{
+    const res = await axios.get(`${BASEURL}/workers/?pond_id=${pondId}`);
+    return res.data
+  } catch(err) {
+    console.log("Fetch Worker Failed: ", err);
+    throw err;
+  }
+}

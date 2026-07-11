@@ -1,10 +1,29 @@
 import FeederCard from "./FeederCard";
 import useFeedingData from "../../hooks/useFeedingData";
 import useFeederDashboardData from "../../hooks/useFeederDashboardData";
-
+import { useState, useEffect } from "react";
 
 const FeederGrid = ({ applyAll }) => {
-  const pondId = Number(localStorage.getItem("activePond"));
+  // const pondId = Number(localStorage.getItem("activePond"));
+
+  const [pondId, setPondId] = useState(
+  Number(localStorage.getItem("activePond"))
+);
+
+useEffect(() => {
+  const handlePondChange = () => {
+    const newPondId = Number(localStorage.getItem("activePond"));
+    console.log("New Pond Selected:", newPondId);
+    setPondId(newPondId);
+  };
+
+  window.addEventListener("pondChanged", handlePondChange);
+
+  return () =>
+    window.removeEventListener("pondChanged", handlePondChange);
+}, []);
+
+  
 
   const { devices, deviceTasksMap, loading } =
     useFeederDashboardData(pondId);

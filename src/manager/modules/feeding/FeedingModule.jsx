@@ -146,11 +146,144 @@
 
 // export default FeedingModule;
 
-import React, { useState } from "react";
+// import React, { useEffect, useState } from "react";
+// import { useParams } from "react-router-dom"; // ✅ FIX
+// import Feeding from "./devices/Feeding";
+// import FeedI from "./devices/FeedI";
+// import { addWorker, getWorkersByPond } from "../../hooks/useFeedingModuleData";
+
+// const FeedingModule = (props) => {
+//   // ✅ GET pondId FROM URL
+//   const { pondId } = useParams();
+
+//   const pondName = props.pondName || "Unknown Pond";
+
+//   // ✅ STATE
+//   const [workerName, setWorkerName] = useState("");
+//   const [mobileNo, setMobileNo] = useState("");
+//   const [ workerExists, setWorkerExists] = useState(false);
+
+//   useEffect(() => {
+//     const fetchWorker = async () => {
+//       try {
+//         const data = await getWorkersByPond(pondId)
+//         if(data.count > 0) {
+//           setWorkerExists(true);
+//         } else {
+//           setWorkerExists(false);
+//         }
+//       } catch(err) {
+//         console.error("Error fetching worker:", err)
+//       }
+//     };
+//     if(pondId){
+//       fetchWorker();
+//     }
+//   }, [pondId]);
+
+//   // ✅ HANDLE ASSIGN
+//   const handleAssign = async () => {
+//     if (!workerName || !mobileNo) {
+//       alert("Please enter name and mobile number");
+//       return;
+//     }
+
+//     try {
+//       await addWorker({
+//         name: workerName,
+//         mobno: mobileNo,
+//         pond_id: Number(pondId), // ✅ ensure number
+//       });
+
+//       alert("Worker added successfully");
+      
+//       setWorkerExists(true); 
+//       setWorkerName("");
+//       setMobileNo("");
+
+//     } catch (err) {
+//       const msg =
+//         err.response?.data?.non_field_errors?.[0] ||
+//         "Failed to add worker";
+
+//       alert(msg);
+//     }
+//   };
+
+//   return (
+//     <div className="p-6">
+//       <h2 className="text-lg font-semibold mb-4">
+//         {pondName}
+//       </h2>
+
+//       {/* INPUT SECTION */}
+//       <div className="flex gap-4 items-center text-sm text-gray-500 p-4">
+        
+//         <div className="flex gap-2 items-center">
+//           <label>Worker Name:</label>
+//           <input
+//             type="text"
+//             className="border rounded px-2 py-2"
+//             placeholder="Enter Worker Name"
+//             value={workerName}
+//             onChange={(e) => setWorkerName(e.target.value)}
+//           />
+//         </div>
+
+//         <div className="flex gap-2 items-center">
+//           <label>Mobile no.:</label>
+//           <input
+//             type="tel"
+//             className="border rounded px-2 py-2"
+//             placeholder="Enter Mobile no."
+//             value={mobileNo}
+//             onChange={(e) => setMobileNo(e.target.value)}
+//           />
+//         </div>
+
+//         {/* <button
+//           onClick={handleAssign}
+//           disabled={workerExists}
+//           className="bg-green-600 px-3 py-2 rounded-md text-white hover:bg-green-700"
+//         >
+//           Assign
+//         </button> */}
+//         <button
+//   onClick={handleAssign}
+//   disabled={workerExists}
+//   className={`px-3 py-2 rounded-md text-white ${
+//     workerExists
+//       ? "bg-gray-400 cursor-not-allowed"
+//       : "bg-green-600 hover:bg-green-700"
+//   }`}
+// >
+//   {workerExists ? "Worker Assigned" : "Assign"}
+// </button>
+//       </div>
+
+//       {/* FEEDING */}
+//       <div className="mb-6">
+//         <Feeding />
+//       </div>
+
+//       {/* FARM I */}
+//       <div>
+//         <FeedI />
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default FeedingModule;
+
+
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; // ✅ FIX
 import Feeding from "./devices/Feeding";
 import FeedI from "./devices/FeedI";
-import { addWorker } from "../../hooks/useFeedingModuleData";
+import { addWorker, getWorkersByPond } from "../../hooks/useFeedingModuleData";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const FeedingModule = (props) => {
   // ✅ GET pondId FROM URL
@@ -161,11 +294,30 @@ const FeedingModule = (props) => {
   // ✅ STATE
   const [workerName, setWorkerName] = useState("");
   const [mobileNo, setMobileNo] = useState("");
+  const [ workerExists, setWorkerExists] = useState(false);
+
+  useEffect(() => {
+    const fetchWorker = async () => {
+      try {
+        const data = await getWorkersByPond(pondId)
+        if(data.count > 0) {
+          setWorkerExists(true);
+        } else {
+          setWorkerExists(false);
+        }
+      } catch(err) {
+        console.error("Error fetching worker:", err)
+      }
+    };
+    if(pondId){
+      fetchWorker();
+    }
+  }, [pondId]);
 
   // ✅ HANDLE ASSIGN
   const handleAssign = async () => {
     if (!workerName || !mobileNo) {
-      alert("Please enter name and mobile number");
+      toast.warn("Please enter name and mobile number");
       return;
     }
 
@@ -176,8 +328,9 @@ const FeedingModule = (props) => {
         pond_id: Number(pondId), // ✅ ensure number
       });
 
-      alert("Worker added successfully");
-
+      toast.success("Worker added successfully");
+      
+      setWorkerExists(true); 
       setWorkerName("");
       setMobileNo("");
 
@@ -186,7 +339,7 @@ const FeedingModule = (props) => {
         err.response?.data?.non_field_errors?.[0] ||
         "Failed to add worker";
 
-      alert(msg);
+      toast.error(msg);
     }
   };
 
@@ -221,12 +374,24 @@ const FeedingModule = (props) => {
           />
         </div>
 
-        <button
+        {/* <button
           onClick={handleAssign}
+          disabled={workerExists}
           className="bg-green-600 px-3 py-2 rounded-md text-white hover:bg-green-700"
         >
           Assign
-        </button>
+        </button> */}
+        <button
+  onClick={handleAssign}
+  disabled={workerExists}
+  className={`px-3 py-2 rounded-md text-white ${
+    workerExists
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-green-600 hover:bg-green-700"
+  }`}
+>
+  {workerExists ? "Worker Assigned" : "Assign"}
+</button>
       </div>
 
       {/* FEEDING */}

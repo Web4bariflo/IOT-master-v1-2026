@@ -82,7 +82,7 @@ const PondModulePage = () => {
         )}
 
         {activeModule === "energy" && (
-          <EnergyModule pondname={pondName} />
+          <EnergyModule pondname={pondName} pondId={pondId} />
         )}
       </div>
     </div>

@@ -20,7 +20,7 @@
 
 //         const res = await axios.get(
 //           `${BASEURL}/deviceid_view/${pondId}/`,
-//           { params: { device_type: "Feeding" } },
+//           { params: { device_type: "AutoFeeder" } },
 //         );
 //         const list = Array.isArray(res.data)
 //           ? res.data

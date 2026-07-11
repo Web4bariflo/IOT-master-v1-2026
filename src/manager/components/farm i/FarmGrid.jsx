@@ -111,7 +111,7 @@
 
 // export default FarmGrid;
 
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import FarmCard from "./FarmCard";
 import CheckTrayActive from "../../../assets/Images/checktrayActive.png";
 import { useFarmingData } from "../../hooks/useFarmingData";
@@ -119,27 +119,66 @@ import { useFarmingData } from "../../hooks/useFarmingData";
 const FarmGrid = ({ applyAll }) => {
   const [view, setView] = useState("grid");
 
-  const pondId = Number(localStorage.getItem("activePond"));
+  // const pondId = Number(localStorage.getItem("activePond"));
 
-  const { tasks, devices } = useFarmingData(pondId);
+  
+    const [pondId, setPondId] = useState(
+    Number(localStorage.getItem("activePond"))
+  );
+  
+  useEffect(() => {
+    const handlePondChange = () => {
+      setPondId(Number(localStorage.getItem("activePond")));
+    };
+  
+    window.addEventListener("pondChanged", handlePondChange);
+  
+    return () =>
+      window.removeEventListener("pondChanged", handlePondChange);
+  }, []);
+
+  const { tasks, devices, loading } = useFarmingData(pondId);
+
+  if (loading) {
+  return (
+    <div className="p-4 text-sm text-gray-500">
+      Loading checktray...
+    </div>
+  );
+}
+
+  // Ensure `devices` and `tasks` are arrays before using array methods
+  const devicesArr = Array.isArray(devices)
+    ? devices
+    : devices && typeof devices === "object"
+    ? Object.values(devices)
+    : [];
+
+  const tasksArr = Array.isArray(tasks) ? tasks : [];
 
   // Use tasks if available, otherwise create placeholder tasks from devices
-  const displayTasks = devices.map((device) => {
-    const task = tasks.find(
-      (t) => t.device_id === device.device_id
-    );
+  const displayTasks = devicesArr.map((device) => {
+    const task = tasksArr.find((t) => t.device_id === device.device_id || t.device_id === device.id || t.id === device.device_id);
+
+//     if (loading) {
+//   return (
+//     <div className="p-4 text-sm text-gray-500">
+//       Loading  checktray...
+//     </div>
+//   );
+// }
 
     return task
       ? task
       : {
-        id: device.device_id,
-        device_id: device.device_id,
-        status: "No Task",
-        start_time: null,
-        stop_time: null,
-        water_level: null,
-        spray_cycle: "no",
-      };
+          id: device.device_id || device.id,
+          device_id: device.device_id || device.id,
+          status: "No Task",
+          start_time: null,
+          stop_time: null,
+          water_level: null,
+          spray_cycle: "no",
+        };
   });
 
   return (

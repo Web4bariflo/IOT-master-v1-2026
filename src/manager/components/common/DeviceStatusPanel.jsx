@@ -206,15 +206,44 @@ const rssiToBars = (rssi) => {
     return 1;
 };
 
-const pondId = Number(localStorage.getItem("activePond"));
+// const pondId = Number(localStorage.getItem("activePond"));
 
 const DeviceStatusPanel = ({ config, feederImage }) => {
     const { deviceStatus, client, isConnected } = useMqtt();
-    const { devices, loading } = useDashboardData(pondId, config.deviceType);
-    console.log("Devices:", devices);
+   
 
     const [activeTab, setActiveTab] = useState("all");
     const [onlineMap, setOnlineMap] = useState({});
+
+    const [pondName, setPondName] = useState(
+  localStorage.getItem("activePondName") || "Pond 1"
+);
+
+const [pondId, setPondId] = useState(
+  Number(localStorage.getItem("activePond"))
+);
+
+ const { devices, loading } = useDashboardData(pondId, config.deviceType);
+    console.log("Devices:", devices);
+
+
+useEffect(() => {
+  const handlePondChange = () => {
+    setPondName(
+      localStorage.getItem("activePondName") || "Pond 1"
+    );
+
+    setPondId(
+      Number(localStorage.getItem("activePond"))
+    );
+  };
+
+  window.addEventListener("pondChanged", handlePondChange);
+
+  return () => {
+    window.removeEventListener("pondChanged", handlePondChange);
+  };
+}, []);
 
     useEffect(() => {
         if (!client || !isConnected || devices.length === 0) return;
@@ -281,9 +310,9 @@ const DeviceStatusPanel = ({ config, feederImage }) => {
 
             {/* HEADER */}
             <div className="px-4 py-3 bg-green-50 border-b">
-                <h3 className="text-sm font-semibold">
-                    {config.title} – Pond 1
-                </h3>
+              <h3 className="text-sm font-semibold">
+  {config.title} – {pondName}
+</h3>
             </div>
 
             {/* TABS */}
@@ -388,9 +417,11 @@ const DeviceStatusPanel = ({ config, feederImage }) => {
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                         <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
                                     </span>
+                                    
                                 </div>
                             )}
                         </div>
+                        
                     );
                 })}
             </div>
@@ -399,3 +430,4 @@ const DeviceStatusPanel = ({ config, feederImage }) => {
 };
 
 export default DeviceStatusPanel;
+

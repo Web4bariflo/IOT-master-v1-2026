@@ -23,9 +23,9 @@ const useDashboardData = (pondId, deviceType) => {
 
 console.log("ALL DEVICES FULL:", JSON.stringify(allDevices, null, 2));
 
-        // ✅ FILTER HERE (THIS IS THE FIX)
+        // ✅ FILTER HERE (Case Insensitive)
         const filteredDevices = allDevices.filter(
-          (d) => d.device_type === deviceType
+          (d) => String(d.device_type).toLowerCase() === String(deviceType).toLowerCase()
         );
 
         setDevices(filteredDevices);
