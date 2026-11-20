@@ -482,7 +482,7 @@ const Assets = () => {
               className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition"
             >
               <i className="bi bi-chevron-right text-[10px]"></i>
-            </button>
+            </button> 
           </div>
         </div>
       </div>
