@@ -7,6 +7,8 @@ import ManagerPrivateRoute from "../Private/ManagerPrivateRoute";
 import Loader from "../Private/Loader";
 import PondModulePage from "./modules/PondModulePage";
 import FeedingModule from "./modules/feeding/FeedingModule";
+import Processtable from "../master/components/Processtable";
+import Assets from "../master/components/Assets";
 
 const ManagerMain = () => {
   const BASEURL = process.env.REACT_APP_IP;
@@ -54,6 +56,8 @@ const ManagerMain = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="feeding" element={<FeedingModule />} />
         <Route path="pond-module/:pondId" element={<PondModulePage />} />
+        <Route path="process-table" element={<Processtable />} />
+        <Route path="assets" element={<Assets />} />
       </Route>
     </Routes>
   );

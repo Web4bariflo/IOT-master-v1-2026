@@ -1,0 +1,564 @@
+import React, { useState, useMemo } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+const INITIAL_ASSETS = [
+  {
+    id: "AST-00124",
+    name: "Feeder-01",
+    pond: "Pond 1",
+    category: "Auto Feeder",
+    model: "BF-FD-200",
+    installDate: "14 Apr 2025",
+    status: "In Progress",
+    lastHeartbeat: "14 Apr 2025, 09:15 AM",
+  },
+  {
+    id: "AST-00123",
+    name: "Feeder-02",
+    pond: "Pond 2",
+    category: "Auto Feeder",
+    model: "BF-FD-200",
+    installDate: "14 Apr 2025",
+    status: "Completed",
+    lastHeartbeat: "14 Apr 2025, 08:30 AM",
+  },
+  {
+    id: "AST-00122",
+    name: "Aerator-01",
+    pond: "Pond 1",
+    category: "Aerator",
+    model: "BF-AR-150",
+    installDate: "13 Apr 2025",
+    status: "Completed",
+    lastHeartbeat: "13 Apr 2025, 07:45 PM",
+  },
+  {
+    id: "AST-00121",
+    name: "PowerMon-01",
+    pond: "Pond 3",
+    category: "Power Monitoring",
+    model: "BF-PM-100",
+    installDate: "13 Apr 2025",
+    status: "In Progress",
+    lastHeartbeat: "13 Apr 2025, 06:00 PM",
+  },
+  {
+    id: "AST-00120",
+    name: "Feeder-03",
+    pond: "Pond 2",
+    category: "Auto Feeder",
+    model: "BF-FD-200",
+    installDate: "13 Apr 2025",
+    status: "Failed",
+    lastHeartbeat: "13 Apr 2025, 05:15 PM",
+  },
+  {
+    id: "AST-00119",
+    name: "Aerator-02",
+    pond: "Pond 2",
+    category: "Aerator",
+    model: "BF-AR-150",
+    installDate: "12 Apr 2025",
+    status: "Completed",
+    lastHeartbeat: "13 Apr 2025, 02:40 PM",
+  },
+  {
+    id: "AST-00118",
+    name: "PowerMon-02",
+    pond: "Pond 1",
+    category: "Power Monitoring",
+    model: "BF-PM-100",
+    installDate: "11 Apr 2025",
+    status: "Completed",
+    lastHeartbeat: "13 Apr 2025, 11:35 AM",
+  },
+  {
+    id: "AST-00117",
+    name: "Feeder-04",
+    pond: "Pond 3",
+    category: "Auto Feeder",
+    model: "BF-FD-200",
+    installDate: "10 Apr 2025",
+    status: "Completed",
+    lastHeartbeat: "13 Apr 2025, 09:30 AM",
+  },
+];
+
+const Assets = () => {
+  const [activeTab, setActiveTab] = useState("All Assets");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All Status");
+  const [selectedAsset, setSelectedAsset] = useState(INITIAL_ASSETS[0]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5;
+
+  const tabs = [
+    {
+      id: "All Assets",
+      label: "All Assets",
+      icon: <i className="bi bi-grid-fill text-sm" />,
+    },
+    {
+      id: "Auto Feeder",
+      label: "Auto Feeder",
+      icon: (
+        <svg
+          className="w-4 h-4 fill-current"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M12 2a1 1 0 0 1 1 1v1.07A7.002 7.002 0 0 1 19 11v1h1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1.14a7.001 7.001 0 0 1-5.86 5.86V23a1 1 0 1 1-2 0v-1.14A7.001 7.001 0 0 1 5.14 16H4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1h1v-1a7.002 7.002 0 0 1 6-6.93V3a1 1 0 0 1 1-1zm0 4a5 5 0 0 0-5 5v2h10v-2a5 5 0 0 0-5-5zm-3 9a5.002 5.002 0 0 0 6 0H9z" />
+        </svg>
+      ),
+    },
+    {
+      id: "Aerator",
+      label: "Aerator",
+      icon: <i className="bi bi-fan text-sm" />,
+    },
+    {
+      id: "Power Monitoring",
+      label: "Power Monitoring",
+      icon: <i className="bi bi-lightning-charge-fill text-sm" />,
+    },
+  ];
+
+  // Filtered assets
+  const filteredAssets = useMemo(() => {
+    return INITIAL_ASSETS.filter((asset) => {
+      const matchesTab =
+        activeTab === "All Assets" || asset.category === activeTab;
+
+      const matchesSearch =
+        asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        asset.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        asset.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        asset.pond.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const matchesStatus =
+        statusFilter === "All Status" ||
+        (statusFilter === "In Progress"
+          ? ["in progress", "processing", "pending"].includes(asset.status.toLowerCase())
+          : statusFilter === "Completed"
+          ? ["completed", "active"].includes(asset.status.toLowerCase())
+          : statusFilter === "Failed"
+          ? ["failed", "offline"].includes(asset.status.toLowerCase())
+          : asset.status.toLowerCase() === statusFilter.toLowerCase());
+
+      return matchesTab && matchesSearch && matchesStatus;
+    });
+  }, [activeTab, searchQuery, statusFilter]);
+
+  const totalRecords = 24;
+  const paginatedAssets = filteredAssets.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case "In Progress":
+      case "Processing":
+      case "Pending":
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            In Progress
+          </span>
+        );
+      case "Completed":
+      case "Active":
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+            Completed
+          </span>
+        );
+      case "Failed":
+      case "Offline":
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600 border border-rose-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+            Failed
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+            {status}
+          </span>
+        );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#f4f7fb] px-6 pt-4 pb-6 lg:px-8 lg:pt-4 lg:pb-8">
+      {/* Header */}
+      <div className="flex items-start gap-4 mb-6">
+        <div className="text-blue-600 mt-1">
+          <i className="bi bi-box-seam-fill text-3xl"></i>
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            Assets
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal">
+            Monitor equipment status, deployment, and operational records across Aqua Farming ponds
+          </p>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex items-center gap-3 mb-6 overflow-x-auto pb-1">
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => {
+                setActiveTab(tab.id);
+                setCurrentPage(1);
+              }}
+              className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
+                  : "bg-blue-50/70 hover:bg-blue-100/70 text-slate-700"
+              }`}
+            >
+              {tab.icon}
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* KPI Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {/* Total Tasks */}
+        <div
+          onClick={() => {
+            setStatusFilter("All Status");
+            setCurrentPage(1);
+          }}
+          className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
+            statusFilter === "All Status"
+              ? "border-blue-400 ring-2 ring-blue-500/20"
+              : "border-blue-100/80 hover:border-blue-200"
+          }`}
+        >
+          <div className="w-11 h-11 rounded-full bg-blue-600 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+            <i className="bi bi-play-fill ml-0.5"></i>
+          </div>
+          <div>
+            <p className="text-xs font-medium text-slate-500 mb-0.5">
+              Total Tasks
+            </p>
+            <p className="text-2xl font-bold text-slate-900 leading-tight">24</p>
+          </div>
+        </div>
+
+        {/* In Progress */}
+        <div
+          onClick={() => {
+            setStatusFilter("In Progress");
+            setCurrentPage(1);
+          }}
+          className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
+            statusFilter === "In Progress" || statusFilter === "Processing"
+              ? "border-amber-400 ring-2 ring-amber-500/20"
+              : "border-blue-100/80 hover:border-amber-200"
+          }`}
+        >
+          <div className="w-11 h-11 rounded-full bg-amber-500 text-white flex items-center justify-center text-xl shadow-sm flex-shrink-0">
+            <i className="bi bi-arrow-repeat"></i>
+          </div>
+          <div>
+            <p className="text-xs font-medium text-slate-500 mb-0.5">
+              In Progress
+            </p>
+            <p className="text-2xl font-bold text-slate-900 leading-tight">6</p>
+          </div>
+        </div>
+
+        {/* Completed */}
+        <div
+          onClick={() => {
+            setStatusFilter("Completed");
+            setCurrentPage(1);
+          }}
+          className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
+            statusFilter === "Completed" || statusFilter === "Active"
+              ? "border-emerald-400 ring-2 ring-emerald-500/20"
+              : "border-blue-100/80 hover:border-emerald-200"
+          }`}
+        >
+          <div className="w-11 h-11 rounded-full bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+            <i className="bi bi-check-lg"></i>
+          </div>
+          <div>
+            <p className="text-xs font-medium text-slate-500 mb-0.5">
+              Completed
+            </p>
+            <p className="text-2xl font-bold text-slate-900 leading-tight">16</p>
+          </div>
+        </div>
+
+        {/* Failed */}
+        <div
+          onClick={() => {
+            setStatusFilter("Failed");
+            setCurrentPage(1);
+          }}
+          className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
+            statusFilter === "Failed" || statusFilter === "Offline"
+              ? "border-rose-400 ring-2 ring-rose-500/20"
+              : "border-blue-100/80 hover:border-rose-200"
+          }`}
+        >
+          <div className="w-11 h-11 rounded-full bg-rose-500 text-white flex items-center justify-center text-lg shadow-sm flex-shrink-0">
+            <i className="bi bi-x-lg"></i>
+          </div>
+          <div>
+            <p className="text-xs font-medium text-slate-500 mb-0.5">
+              Failed
+            </p>
+            <p className="text-2xl font-bold text-slate-900 leading-tight">2</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Assets Table Card */}
+      <div className="bg-white rounded-2xl border border-blue-100/80 shadow-sm p-6 mb-6">
+        {/* Card Header with Search and Status Filter */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+          <div className="flex items-center gap-2">
+            <i className="bi bi-list-task text-slate-700 text-lg"></i>
+            <h2 className="text-base font-bold text-slate-800">Asset Inventory</h2>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Search Input */}
+            <div className="relative">
+              <i className="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+              <input
+                type="text"
+                placeholder="Search by Asset ID or Device..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-500 w-52 sm:w-60 transition"
+              />
+            </div>
+
+            {/* Status Dropdown */}
+            <div className="relative">
+              <select
+                value={statusFilter}
+                onChange={(e) => {
+                  setStatusFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="appearance-none pl-3 pr-8 py-1.5 text-xs rounded-lg border border-slate-200 text-slate-700 bg-white font-medium focus:outline-none focus:border-blue-500 cursor-pointer"
+              >
+                <option value="All Status">All Status</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Failed">Failed</option>
+              </select>
+              <i className="bi bi-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px] pointer-events-none"></i>
+            </div>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-blue-100 text-xs font-semibold text-blue-600 bg-blue-50/50">
+                <th className="py-3.5 px-4 text-blue-600 font-semibold">Asset ID</th>
+                <th className="py-3.5 px-4 text-blue-600 font-semibold">Device Name</th>
+                <th className="py-3.5 px-4 text-blue-600 font-semibold">Pond</th>
+                <th className="py-3.5 px-4 text-blue-600 font-semibold">Category</th>
+                <th className="py-3.5 px-4 text-blue-600 font-semibold">Model</th>
+                <th className="py-3.5 px-4 text-blue-600 font-semibold">Install Date</th>
+                <th className="py-3.5 px-4 text-blue-600 font-semibold">Status</th>
+                <th className="py-3.5 px-4 text-center text-blue-600 font-semibold">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
+              {paginatedAssets.length > 0 ? (
+                paginatedAssets.map((asset) => (
+                  <tr
+                    key={asset.id}
+                    onClick={() => setSelectedAsset(asset)}
+                    className={`hover:bg-blue-50/40 transition-colors cursor-pointer ${
+                      selectedAsset?.id === asset.id ? "bg-blue-50/30" : ""
+                    }`}
+                  >
+                    <td className="py-3.5 px-4 font-semibold text-slate-800">
+                      {asset.id}
+                    </td>
+                    <td className="py-3.5 px-4">{asset.name}</td>
+                    <td className="py-3.5 px-4">{asset.pond}</td>
+                    <td className="py-3.5 px-4">{asset.category}</td>
+                    <td className="py-3.5 px-4">{asset.model}</td>
+                    <td className="py-3.5 px-4">{asset.installDate}</td>
+                    <td className="py-3.5 px-4">{getStatusBadge(asset.status)}</td>
+                    <td className="py-3.5 px-4 text-center">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedAsset(asset);
+                        }}
+                        className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-500 hover:text-blue-700 transition"
+                        title="View Details"
+                      >
+                        <i className="bi bi-eye text-xs"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" className="text-center py-8 text-slate-400">
+                    No assets found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Table Footer / Pagination */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-slate-100 mt-2">
+          <p className="text-xs text-slate-500">
+            Showing 1–{paginatedAssets.length} of {totalRecords} records
+          </p>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              disabled={currentPage === 1}
+              className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition"
+            >
+              <i className="bi bi-chevron-left text-[10px]"></i>
+            </button>
+            <button
+              onClick={() => setCurrentPage(1)}
+              className={`w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center transition ${
+                currentPage === 1
+                  ? "bg-blue-600 text-white shadow-sm"
+                  : "border border-slate-200 text-slate-700 hover:bg-slate-50"
+              }`}
+            >
+              1
+            </button>
+            <button
+              onClick={() => setCurrentPage(2)}
+              className={`w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center transition ${
+                currentPage === 2
+                  ? "bg-blue-600 text-white shadow-sm"
+                  : "border border-slate-200 text-slate-700 hover:bg-slate-50"
+              }`}
+            >
+              2
+            </button>
+            <button
+              onClick={() => setCurrentPage(3)}
+              className={`w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center transition ${
+                currentPage === 3
+                  ? "bg-blue-600 text-white shadow-sm"
+                  : "border border-slate-200 text-slate-700 hover:bg-slate-50"
+              }`}
+            >
+              3
+            </button>
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, 3))}
+              disabled={currentPage === 3}
+              className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition"
+            >
+              <i className="bi bi-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Asset Details Card */}
+      {selectedAsset && (
+        <div className="bg-[#f0f6ff]/70 border border-blue-100 rounded-2xl p-5 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <i className="bi bi-info-circle-fill text-blue-600 text-lg"></i>
+            <h3 className="font-bold text-slate-800 text-sm">Asset Details</h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            {/* Column 1 */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Asset ID</span>
+                <span className="font-semibold text-slate-800">
+                  {selectedAsset.id}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Device Name</span>
+                <span className="font-semibold text-slate-800">
+                  {selectedAsset.name}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Pond</span>
+                <span className="font-semibold text-slate-800">
+                  {selectedAsset.pond}
+                </span>
+              </div>
+            </div>
+
+            {/* Column 2 */}
+            <div className="space-y-3 md:border-l md:border-slate-200/80 md:pl-6">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Category</span>
+                <span className="font-semibold text-slate-800">
+                  {selectedAsset.category}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Model</span>
+                <span className="font-semibold text-slate-800">
+                  {selectedAsset.model}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Install Date</span>
+                <span className="font-semibold text-slate-800">
+                  {selectedAsset.installDate}
+                </span>
+              </div>
+            </div>
+
+            {/* Column 3 */}
+            <div className="space-y-3 md:border-l md:border-slate-200/80 md:pl-6">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Status</span>
+                <span>{getStatusBadge(selectedAsset.status)}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-500">Last Heartbeat</span>
+                <span className="font-semibold text-slate-800">
+                  {selectedAsset.lastHeartbeat}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Assets;
+

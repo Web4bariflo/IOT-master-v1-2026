@@ -355,7 +355,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -363,6 +363,12 @@ const ManagerSidebar = () => {
   const [ponds, setPonds] = useState([]);
   const [search, setSearch] = useState("");
   const [showFilterPonds, setShowFilterPonds] = useState(false);
+  const [showApplications, setShowApplications] = useState(() => {
+    return (
+      window.location.pathname.includes("process-table") ||
+      window.location.pathname.includes("assets")
+    );
+  });
 
   // ✅ ACTIVE POND STATE
   const [activePond, setActivePond] = useState(() => {
@@ -371,6 +377,7 @@ const ManagerSidebar = () => {
   });
 
   const navigate = useNavigate();
+  const location = useLocation();
   const BASEURL = process.env.REACT_APP_IP;
   const clusterId = JSON.parse(localStorage.getItem("auth"))?.cluster
     ?.clusters?.[0]?.id;
@@ -467,6 +474,10 @@ const handlePondClick = (pondId) => {
   }
 
   window.dispatchEvent(new Event("pondChanged"));
+
+  if (location.pathname !== "/manager" && location.pathname !== "/manager/") {
+    navigate("/manager");
+  }
 };
 
   /* ===== GENERATE ===== */
@@ -484,17 +495,17 @@ const handlePondClick = (pondId) => {
   };
 
   return (
-    <aside className="w-64 h-screen bg-white border-r border-gray-200 flex flex-col">
+    <aside className="w-64 h-screen bg-[#f0f4fa] border-r border-blue-200/70 flex flex-col">
       {/* ===== SEARCH ===== */}
-      <div className="p-4 border-b">
+      <div className="p-4 border-b border-blue-200/60 bg-white/50">
         <div className="relative">
-          <i className="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+          <i className="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-blue-400 text-sm" />
           <input
             type="text"
             placeholder="Search pond"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-9 pr-3 py-2 border border-blue-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white text-slate-800 placeholder-slate-400"
           />
         </div>
       </div>
@@ -526,13 +537,13 @@ const handlePondClick = (pondId) => {
       className={`w-full flex items-center justify-between px-3 py-2.5 mb-1 rounded-md text-sm font-medium transition
         ${
           activePond === pond.id
-            ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600"
-            : "text-gray-700 hover:bg-gray-50"
+            ? "bg-blue-100 text-blue-700 border-l-4 border-blue-600 font-semibold shadow-sm"
+            : "text-slate-700 hover:bg-blue-100/50 hover:text-blue-700"
         }
       `}
     >
       <div className="flex items-center gap-3">
-        <i className="bi bi-water text-base" />
+        <i className="bi bi-water text-base text-blue-500" />
         <span>{pond.name}</span>
       </div>
     </button>
@@ -540,7 +551,7 @@ const handlePondClick = (pondId) => {
     {/* ✅ Show Schedule Button ONLY for selected pond */}
     {activePond === pond.id && (
       <button
-        className="w-full mb-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+        className="w-full mb-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 shadow-sm"
         onClick={() => handleGenerate()}
       >
         Schedule
@@ -549,15 +560,56 @@ const handlePondClick = (pondId) => {
   </div>
 ))}
 
+        {/* ===== APPLICATIONS TOGGLE ===== */}
+        <button
+          onClick={() => setShowApplications(!showApplications)}
+          className="w-full flex items-center gap-3 px-3 py-2.5 mt-3 rounded-md text-sm font-semibold text-blue-700 bg-blue-100/40 hover:bg-blue-100/80 border border-blue-200/60 transition"
+        >
+          <i className="bi bi-grid-3x3-gap text-base text-blue-600" />
+          <span>Applications</span>
+          <i
+            className={`bi bi-chevron-${showApplications ? "up" : "down"} ml-auto text-xs text-blue-600`}
+          />
+        </button>
+
+        {/* ===== APPLICATIONS DROPDOWN (PROCESS TABLE & ASSETS) ===== */}
+        {showApplications && (
+          <div className="pl-3 pr-1 py-1 space-y-1">
+            <button
+              onClick={() => navigate("/manager/process-table")}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition ${
+                location.pathname.includes("process-table")
+                  ? "bg-blue-100 text-blue-700 border-l-4 border-blue-600 font-semibold shadow-sm"
+                  : "text-slate-700 hover:bg-blue-100/60 hover:text-blue-700"
+              }`}
+            >
+              <i className="bi bi-grid text-base text-blue-600" />
+              <span>Process Table</span>
+            </button>
+
+            <button
+              onClick={() => navigate("/manager/assets")}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition ${
+                location.pathname.includes("assets")
+                  ? "bg-blue-100 text-blue-700 border-l-4 border-blue-600 font-semibold shadow-sm"
+                  : "text-slate-700 hover:bg-blue-100/60 hover:text-blue-700"
+              }`}
+            >
+              <i className="bi bi-box-seam text-base text-blue-600" />
+              <span>Assets</span>
+            </button>
+          </div>
+        )}
+
         {/* ===== FILTER TOGGLE ===== */}
         <button
           onClick={() => setShowFilterPonds(!showFilterPonds)}
-          className="w-full flex items-center gap-3 px-3 py-2.5 mt-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="w-full flex items-center gap-3 px-3 py-2.5 mt-3 rounded-md text-sm font-medium text-slate-700 hover:bg-blue-100/50 hover:text-blue-700 transition"
         >
-          <i className="bi bi-funnel" />
-          Filters
+          <i className="bi bi-funnel text-blue-500" />
+          <span>Filters</span>
           <i
-            className={`bi bi-chevron-${showFilterPonds ? "up" : "down"} ml-auto text-xs`}
+            className={`bi bi-chevron-${showFilterPonds ? "up" : "down"} ml-auto text-xs text-blue-500`}
           />
         </button>
 

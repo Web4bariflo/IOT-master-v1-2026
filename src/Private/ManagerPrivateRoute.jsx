@@ -22,7 +22,7 @@ const ManagerPrivateRoute = () => {
           <ManagerSidebar/>
         )}
         <div className="flex-1 overflow-y-auto">
-           <Outlet  />
+          <Outlet />
         </div>
       </div>
     </div>

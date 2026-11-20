@@ -11,6 +11,8 @@ import PondDetails from "./PondDetails";
 import axios from "axios";
 import AquaPrivateRoute from "../Private/AquaPrivateRoute";
 import CreateManager from "./CreateManager";
+import Processtable from "./components/Processtable";
+import Assets from "./components/Assets";
 
 const AquaMainPage = () => {
   const BASEURl = process.env.REACT_APP_IP;
@@ -19,7 +21,7 @@ const AquaMainPage = () => {
   // const mobno = 9123458952;
   const csrf_token = urlParams.get("token") || localStorage.getItem("token");
   const category =
-  urlParams.get("category") || localStorage.getItem("category");
+    urlParams.get("category") || localStorage.getItem("category");
   const navigate = useNavigate();
   console.log(mobno);
   console.log(category);
@@ -29,8 +31,8 @@ const AquaMainPage = () => {
   if (csrf_token) localStorage.setItem("token", csrf_token);
   if (category) localStorage.setItem("category", category);
 
-  const url = `https://water.bc-pl.com/waterbody?category=${category}&token=${csrf_token}&mobno=${mobno}`;
-  // const url = `http://localhost:3001/waterbody?category=${category}&token=${csrf_token}&mobno=${mobno}`;
+  // const url = `https://water.bc-pl.com/waterbody?category=${category}&token=${csrf_token}&mobno=${mobno}`;
+  const url = `http://localhost:3001/waterbody?category=${category}&token=${csrf_token}&mobno=${mobno}`;
 
 
   useEffect(() => {
@@ -63,6 +65,8 @@ const AquaMainPage = () => {
         <Route path="/customerprofile/:id" element={<CustomerProfile />} />
         <Route path="/ponddetails/:id" element={<PondDetails />} />
         <Route path="/create-manager" element={<CreateManager />} />
+        <Route path="/process-table" element={<Processtable />} />
+        <Route path="/assets" element={<Assets />} />
       </Route>
     </Routes>
   );
