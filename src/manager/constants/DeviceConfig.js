@@ -9,7 +9,7 @@ export const DEVICE_CONFIG = {
   FARM: {
     deviceType: "checktray",
     title: "Check Trays",
-    topic: "checktray",
+    topic: "feeder",
     hasBattery: true,
     hasSignal: true,
   },

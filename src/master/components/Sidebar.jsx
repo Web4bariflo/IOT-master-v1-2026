@@ -26,7 +26,7 @@ const Sidebar = ({ url }) => {
   const handleButtonClick = () => {
     // console.log(url);
     // window.location.href = url;
-    const url = `http://localhost:3001/manager`;
+    const url = `https://iotmaster.bc-pl.com/manager`;
     window.location.href = url;
   };
 

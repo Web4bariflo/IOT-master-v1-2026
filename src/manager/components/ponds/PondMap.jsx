@@ -115,7 +115,7 @@
 
 //   try {
 //     const response = await fetch(
-//       `http://192.168.1.100:8001/pond-layout-detail/?pond_id=${pondId}`
+//       `https://aquabg.bc-pl.com/pond-layout-detail/?pond_id=${pondId}`
 //     );
 
 //     const data = await response.json();
