@@ -1,0 +1,10 @@
+
+services:
+  iot_frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: iot_frontend
+    restart: unless-stopped
+    ports:
+      - "3002:80"
