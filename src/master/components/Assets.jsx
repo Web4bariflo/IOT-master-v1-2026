@@ -3,101 +3,101 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 const INITIAL_ASSETS = [
 {
 id: "AST-00124",
-name: "Feeder-01",
-pond: "Pond 1",
-category: "Auto Feeder",
+name: "FEEDER-01",
+pond: "POND 1",
+category: "AUTO FEEDER",
 model: "BF-FD-200",
-installDate: "14 Apr 2025",
-status: "In Progress",
-lastHeartbeat: "14 Apr 2025, 09:15 AM",
+installDate: "14 APR 2025",
+status: "IN PROGRESS",
+lastHeartbeat: "14 APR 2025, 09:15 AM",
 },
 {
 id: "AST-00123",
-name: "Feeder-02",
-pond: "Pond 2",
-category: "Auto Feeder",
+name: "FEEDER-02",
+pond: "POND 2",
+category: "AUTO FEEDER",
 model: "BF-FD-200",
-installDate: "14 Apr 2025",
-status: "Completed",
-lastHeartbeat: "14 Apr 2025, 08:30 AM",
+installDate: "14 APR 2025",
+status: "COMPLETED",
+lastHeartbeat: "14 APR 2025, 08:30 AM",
 },
 {
 id: "AST-00122",
-name: "Aerator-01",
-pond: "Pond 1",
-category: "Aerator",
+name: "AERATOR-01",
+pond: "POND 1",
+category: "AERATOR",
 model: "BF-AR-150",
-installDate: "13 Apr 2025",
-status: "Completed",
-lastHeartbeat: "13 Apr 2025, 07:45 PM",
+installDate: "13 APR 2025",
+status: "COMPLETED",
+lastHeartbeat: "13 APR 2025, 07:45 PM",
 },
 {
 id: "AST-00121",
-name: "PowerMon-01",
-pond: "Pond 3",
-category: "Power Monitoring",
+name: "POWERMON-01",
+pond: "POND 3",
+category: "POWER MONITORING",
 model: "BF-PM-100",
-installDate: "13 Apr 2025",
-status: "In Progress",
-lastHeartbeat: "13 Apr 2025, 06:00 PM",
+installDate: "13 APR 2025",
+status: "IN PROGRESS",
+lastHeartbeat: "13 APR 2025, 06:00 PM",
 },
 {
 id: "AST-00120",
-name: "Feeder-03",
-pond: "Pond 2",
-category: "Auto Feeder",
+name: "FEEDER-03",
+pond: "POND 2",
+category: "AUTO FEEDER",
 model: "BF-FD-200",
-installDate: "13 Apr 2025",
-status: "Failed",
-lastHeartbeat: "13 Apr 2025, 05:15 PM",
+installDate: "13 APR 2025",
+status: "FAILED",
+lastHeartbeat: "13 APR 2025, 05:15 PM",
 },
 {
 id: "AST-00119",
-name: "Aerator-02",
-pond: "Pond 2",
-category: "Aerator",
+name: "AERATOR-02",
+pond: "POND 2",
+category: "AERATOR",
 model: "BF-AR-150",
-installDate: "12 Apr 2025",
-status: "Completed",
-lastHeartbeat: "13 Apr 2025, 02:40 PM",
+installDate: "12 APR 2025",
+status: "COMPLETED",
+lastHeartbeat: "13 APR 2025, 02:40 PM",
 },
 {
 id: "AST-00118",
-name: "PowerMon-02",
-pond: "Pond 1",
-category: "Power Monitoring",
+name: "POWERMON-02",
+pond: "POND 1",
+category: "POWER MONITORING",
 model: "BF-PM-100",
-installDate: "11 Apr 2025",
-status: "Completed",
-lastHeartbeat: "13 Apr 2025, 11:35 AM",
+installDate: "11 APR 2025",
+status: "COMPLETED",
+lastHeartbeat: "13 APR 2025, 11:35 AM",
 },
 {
 id: "AST-00117",
-name: "Feeder-04",
-pond: "Pond 3",
-category: "Auto Feeder",
+name: "FEEDER-04",
+pond: "POND 3",
+category: "AUTO FEEDER",
 model: "BF-FD-200",
-installDate: "10 Apr 2025",
-status: "Completed",
-lastHeartbeat: "13 Apr 2025, 09:30 AM",
+installDate: "10 APR 2025",
+status: "COMPLETED",
+lastHeartbeat: "13 APR 2025, 09:30 AM",
 },
 ];
 const Assets = () => {
-const [activeTab, setActiveTab] = useState("All Assets");
+const [activeTab, setActiveTab] = useState("ALL ASSETS");
 const [searchQuery, setSearchQuery] = useState("");
-const [statusFilter, setStatusFilter] = useState("All Status");
+const [statusFilter, setStatusFilter] = useState("ALL STATUS");
 const [selectedAsset, setSelectedAsset] = useState(INITIAL_ASSETS[0]);
 const [currentPage, setCurrentPage] = useState(1);
 const pageSize = 5;
 const tabs = [
 {
-id: "All Assets",
-label: "All Assets",
+id: "ALL ASSETS",
+label: "ALL ASSETS",
 icon: <i className="bi bi-grid-fill text-sm" />,
 },
 {
-id: "Auto Feeder",
-label: "Auto Feeder",
+id: "AUTO FEEDER",
+label: "AUTO FEEDER",
 icon: (
 <svg
 className="w-4 h-4 fill-current"
@@ -109,13 +109,13 @@ xmlns="http://www.w3.org/2000/svg"
 ),
 },
 {
-id: "Aerator",
-label: "Aerator",
+id: "AERATOR",
+label: "AERATOR",
 icon: <i className="bi bi-fan text-sm" />,
 },
 {
-id: "Power Monitoring",
-label: "Power Monitoring",
+id: "POWER MONITORING",
+label: "POWER MONITORING",
 icon: <i className="bi bi-lightning-charge-fill text-sm" />,
 },
 ];
@@ -123,19 +123,19 @@ icon: <i className="bi bi-lightning-charge-fill text-sm" />,
 const filteredAssets = useMemo(() => {
 return INITIAL_ASSETS.filter((asset) => {
 const matchesTab =
-activeTab === "All Assets" || asset.category === activeTab;
+activeTab === "ALL ASSETS" || asset.category === activeTab;
 const matchesSearch =
 asset.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
 asset.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
 asset.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
 asset.pond.toLowerCase().includes(searchQuery.toLowerCase());
 const matchesStatus =
-statusFilter === "All Status" ||
-(statusFilter === "In Progress"
+statusFilter === "ALL STATUS" ||
+(statusFilter === "IN PROGRESS"
 ? ["in progress", "processing", "pending"].includes(asset.status.toLowerCase())
-: statusFilter === "Completed"
+: statusFilter === "COMPLETED"
 ? ["completed", "active"].includes(asset.status.toLowerCase())
-: statusFilter === "Failed"
+: statusFilter === "FAILED"
 ? ["failed", "offline"].includes(asset.status.toLowerCase())
 : asset.status.toLowerCase() === statusFilter.toLowerCase());
 return matchesTab && matchesSearch && matchesStatus;
@@ -147,54 +147,55 @@ const paginatedAssets = filteredAssets.slice(
 currentPage * pageSize
 );
 const getStatusBadge = (status) => {
-switch (status) {
-case "In Progress":
-case "Processing":
-case "Pending":
+const s = String(status || "").toUpperCase();
+switch (s) {
+case "IN PROGRESS":
+case "PROCESSING":
+case "PENDING":
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100 uppercase">
 <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-In Progress
+IN PROGRESS
 </span>
 );
-case "Completed":
-case "Active":
+case "COMPLETED":
+case "ACTIVE":
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase">
 <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-Completed
+COMPLETED
 </span>
 );
-case "Failed":
-case "Offline":
+case "FAILED":
+case "OFFLINE":
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600 border border-rose-100">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600 border border-rose-100 uppercase">
 <span className="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
-Failed
+FAILED
 </span>
 );
 default:
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-100">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-100 uppercase">
 <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-{status}
+{s}
 </span>
 );
 }
 };
 return (
-<div className="min-h-screen bg-[#f4f7fb] px-6 pt-4 pb-6 lg:px-8 lg:pt-4 lg:pb-8">
+<div className="min-h-screen bg-[#f4f7fb] px-6 pt-4 pb-6 lg:px-8 lg:pt-4 lg:pb-8 uppercase">
 {/* Header /}
 <div className="flex items-start gap-4 mb-6">
 <div className="text-blue-600 mt-1">
 <i className="bi bi-box-seam-fill text-3xl"></i>
 </div>
 <div>
-<h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-Assets
+<h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">
+ASSETS
 </h1>
-<p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal">
-Monitor equipment status, deployment, and operational records across Aqua Farming ponds
+<p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal uppercase">
+MONITOR EQUIPMENT STATUS, DEPLOYMENT, AND OPERATIONAL RECORDS ACROSS AQUA FARMING PONDS
 </p>
 </div>
 </div>
@@ -209,7 +210,7 @@ onClick={() => {
 setActiveTab(tab.id);
 setCurrentPage(1);
 }}
-className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all cursor-pointer ${
+className={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all cursor-pointer uppercase ${
 isActive
 ? "bg-blue-600 text-white shadow-sm shadow-blue-500/25 border border-blue-600"
 : "bg-white text-slate-700 border border-slate-300 shadow-sm hover:bg-slate-50 hover:border-slate-400 hover:text-slate-900"
@@ -222,7 +223,7 @@ isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600 border border
 >
 {tab.icon}
 </div>
-<span>{tab.label}</span>
+<span className="uppercase">{tab.label}</span>
 </button>
 );
 })}
@@ -232,11 +233,11 @@ isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-600 border border
 {/* Total Tasks /}
 <div
 onClick={() => {
-setStatusFilter("All Status");
+setStatusFilter("ALL STATUS");
 setCurrentPage(1);
 }}
 className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
-statusFilter === "All Status"
+statusFilter === "ALL STATUS"
 ? "border-blue-400 ring-2 ring-blue-500/20"
 : "border-blue-100/80 hover:border-blue-200"
 }`}
@@ -245,8 +246,8 @@ statusFilter === "All Status"
 <i className="bi bi-play-fill ml-0.5"></i>
 </div>
 <div>
-<p className="text-xs font-medium text-slate-500 mb-0.5">
-Total Tasks
+<p className="text-xs font-medium text-slate-500 mb-0.5 uppercase">
+TOTAL TASKS
 </p>
 <p className="text-2xl font-bold text-slate-900 leading-tight">24</p>
 </div>
@@ -254,11 +255,11 @@ Total Tasks
 {/* In Progress /}
 <div
 onClick={() => {
-setStatusFilter("In Progress");
+setStatusFilter("IN PROGRESS");
 setCurrentPage(1);
 }}
 className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
-statusFilter === "In Progress" || statusFilter === "Processing"
+statusFilter === "IN PROGRESS"
 ? "border-amber-400 ring-2 ring-amber-500/20"
 : "border-blue-100/80 hover:border-amber-200"
 }`}
@@ -267,8 +268,8 @@ statusFilter === "In Progress" || statusFilter === "Processing"
 <i className="bi bi-arrow-repeat"></i>
 </div>
 <div>
-<p className="text-xs font-medium text-slate-500 mb-0.5">
-In Progress
+<p className="text-xs font-medium text-slate-500 mb-0.5 uppercase">
+IN PROGRESS
 </p>
 <p className="text-2xl font-bold text-slate-900 leading-tight">6</p>
 </div>
@@ -276,11 +277,11 @@ In Progress
 {/* Completed /}
 <div
 onClick={() => {
-setStatusFilter("Completed");
+setStatusFilter("COMPLETED");
 setCurrentPage(1);
 }}
 className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
-statusFilter === "Completed" || statusFilter === "Active"
+statusFilter === "COMPLETED"
 ? "border-emerald-400 ring-2 ring-emerald-500/20"
 : "border-blue-100/80 hover:border-emerald-200"
 }`}
@@ -289,8 +290,8 @@ statusFilter === "Completed" || statusFilter === "Active"
 <i className="bi bi-check-lg"></i>
 </div>
 <div>
-<p className="text-xs font-medium text-slate-500 mb-0.5">
-Completed
+<p className="text-xs font-medium text-slate-500 mb-0.5 uppercase">
+COMPLETED
 </p>
 <p className="text-2xl font-bold text-slate-900 leading-tight">16</p>
 </div>
@@ -298,11 +299,11 @@ Completed
 {/* Failed /}
 <div
 onClick={() => {
-setStatusFilter("Failed");
+setStatusFilter("FAILED");
 setCurrentPage(1);
 }}
 className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
-statusFilter === "Failed" || statusFilter === "Offline"
+statusFilter === "FAILED"
 ? "border-rose-400 ring-2 ring-rose-500/20"
 : "border-blue-100/80 hover:border-rose-200"
 }`}
@@ -311,8 +312,8 @@ statusFilter === "Failed" || statusFilter === "Offline"
 <i className="bi bi-x-lg"></i>
 </div>
 <div>
-<p className="text-xs font-medium text-slate-500 mb-0.5">
-Failed
+<p className="text-xs font-medium text-slate-500 mb-0.5 uppercase">
+FAILED
 </p>
 <p className="text-2xl font-bold text-slate-900 leading-tight">2</p>
 </div>
@@ -324,7 +325,7 @@ Failed
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
 <div className="flex items-center gap-2">
 <i className="bi bi-list-task text-slate-700 text-lg"></i>
-<h2 className="text-base font-bold text-slate-800">Asset Inventory</h2>
+<h2 className="text-base font-bold text-slate-800 uppercase">ASSET INVENTORY</h2>
 </div>
 <div className="flex items-center gap-3">
 {/* Search Input /}
@@ -332,13 +333,13 @@ Failed
 <i className="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
 <input
 type="text"
-placeholder="Search by Asset ID or Device..."
+placeholder="SEARCH BY ASSET ID OR DEVICE..."
 value={searchQuery}
 onChange={(e) => {
 setSearchQuery(e.target.value);
 setCurrentPage(1);
 }}
-className="pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-200 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-500 w-52 sm:w-64 transition"
+className="pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-200 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-500 w-52 sm:w-64 transition uppercase"
 />
 </div>
 {/* Status Dropdown /}
@@ -349,12 +350,12 @@ onChange={(e) => {
 setStatusFilter(e.target.value);
 setCurrentPage(1);
 }}
-className="appearance-none pl-3 pr-8 py-2 text-sm rounded-lg border border-slate-200 text-slate-700 bg-white font-medium focus:outline-none focus:border-blue-500 cursor-pointer"
+className="appearance-none pl-3 pr-8 py-2 text-sm rounded-lg border border-slate-200 text-slate-700 bg-white font-medium focus:outline-none focus:border-blue-500 cursor-pointer uppercase"
 >
-<option value="All Status">All Status</option>
-<option value="In Progress">In Progress</option>
-<option value="Completed">Completed</option>
-<option value="Failed">Failed</option>
+<option value="ALL STATUS">ALL STATUS</option>
+<option value="IN PROGRESS">IN PROGRESS</option>
+<option value="COMPLETED">COMPLETED</option>
+<option value="FAILED">FAILED</option>
 </select>
 <i className="bi bi-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
 </div>
@@ -362,17 +363,17 @@ className="appearance-none pl-3 pr-8 py-2 text-sm rounded-lg border border-slate
 </div>
 {/* Table /}
 <div className="overflow-x-auto">
-<table className="w-full text-left border-collapse">
+<table className="w-full text-left border-collapse uppercase">
 <thead>
 <tr className="border-b border-slate-200">
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Asset ID</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Device Name</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Pond</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Category</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Model</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Install Date</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Status</th>
-<th className="py-2.5 px-3.5 text-center text-black font-semibold text-sm">Actions</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">ASSET ID</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">DEVICE NAME</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">POND</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">CATEGORY</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">MODEL</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">INSTALL DATE</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">STATUS</th>
+<th className="py-2.5 px-3.5 text-center text-black font-semibold text-sm uppercase">ACTIONS</th>
 </tr>
 </thead>
 <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
@@ -385,15 +386,15 @@ className={`hover:bg-blue-50/40 transition-colors cursor-pointer ${
 selectedAsset?.id === asset.id ? "bg-blue-50/30" : ""
 }`}
 >
-<td className="py-2.5 px-3.5 font-semibold text-slate-900">
+<td className="py-2.5 px-3.5 font-semibold text-slate-900 uppercase">
 {asset.id}
 </td>
-<td className="py-2.5 px-3.5">{asset.name}</td>
-<td className="py-2.5 px-3.5">{asset.pond}</td>
-<td className="py-2.5 px-3.5">{asset.category}</td>
-<td className="py-2.5 px-3.5">{asset.model}</td>
-<td className="py-2.5 px-3.5">{asset.installDate}</td>
-<td className="py-2.5 px-3.5">{getStatusBadge(asset.status)}</td>
+<td className="py-2.5 px-3.5 uppercase">{asset.name}</td>
+<td className="py-2.5 px-3.5 uppercase">{asset.pond}</td>
+<td className="py-2.5 px-3.5 uppercase">{asset.category}</td>
+<td className="py-2.5 px-3.5 uppercase">{asset.model}</td>
+<td className="py-2.5 px-3.5 uppercase">{asset.installDate}</td>
+<td className="py-2.5 px-3.5 uppercase">{getStatusBadge(asset.status)}</td>
 <td className="py-2.5 px-3.5 text-center">
 <button
 onClick={(e) => {
@@ -401,7 +402,7 @@ e.stopPropagation();
 setSelectedAsset(asset);
 }}
 className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-500 hover:text-blue-700 transition"
-title="View Details"
+title="VIEW DETAILS"
 >
 <i className="bi bi-eye text-xs"></i>
 </button>
@@ -410,8 +411,8 @@ title="View Details"
 ))
 ) : (
 <tr>
-<td colSpan="8" className="text-center py-8 text-slate-400 text-sm">
-No assets found
+<td colSpan="8" className="text-center py-8 text-slate-400 text-sm uppercase">
+NO ASSETS FOUND
 </td>
 </tr>
 )}
@@ -420,14 +421,15 @@ No assets found
 </div>
 {/* Table Footer / Pagination /}
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3.5 border-t border-slate-100 mt-2">
-<p className="text-sm text-slate-500">
-Showing 1–{paginatedAssets.length} of {totalRecords} records
+<p className="text-sm text-slate-500 uppercase">
+SHOWING 1–{paginatedAssets.length} OF {totalRecords} RECORDS
 </p>
 <div className="flex items-center gap-1.5">
 <button
 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
 disabled={currentPage === 1}
 className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition"
+title="PREVIOUS PAGE"
 >
 <i className="bi bi-chevron-left text-[10px]"></i>
 </button>
@@ -465,6 +467,7 @@ currentPage === 3
 onClick={() => setCurrentPage((p) => Math.min(p + 1, 3))}
 disabled={currentPage === 3}
 className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition"
+title="NEXT PAGE"
 >
 <i className="bi bi-chevron-right text-[10px]"></i>
 </button>
@@ -473,29 +476,29 @@ className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-sl
 </div>
 {/* Asset Details Card /}
 {selectedAsset && (
-<div className="bg-[#f0f6ff]/70 border border-blue-100 rounded-2xl p-5 shadow-sm">
+<div className="bg-[#f0f6ff]/70 border border-blue-100 rounded-2xl p-5 shadow-sm uppercase">
 <div className="flex items-center gap-2 mb-3">
 <i className="bi bi-info-circle-fill text-blue-600 text-lg"></i>
-<h3 className="font-bold text-slate-800 text-base">Asset Details</h3>
+<h3 className="font-bold text-slate-800 text-base uppercase">ASSET DETAILS</h3>
 </div>
 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
 {/* Column 1 /}
 <div className="space-y-3">
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Asset ID</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">ASSET ID</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedAsset.id}
 </span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Device Name</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">DEVICE NAME</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedAsset.name}
 </span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Pond</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">POND</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedAsset.pond}
 </span>
 </div>
@@ -503,20 +506,20 @@ className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-sl
 {/* Column 2 /}
 <div className="space-y-3 md:border-l md:border-slate-200/80 md:pl-6">
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Category</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">CATEGORY</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedAsset.category}
 </span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Model</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">MODEL</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedAsset.model}
 </span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Install Date</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">INSTALL DATE</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedAsset.installDate}
 </span>
 </div>
@@ -524,12 +527,12 @@ className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-sl
 {/* Column 3 /}
 <div className="space-y-3 md:border-l md:border-slate-200/80 md:pl-6">
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Status</span>
-<span>{getStatusBadge(selectedAsset.status)}</span>
+<span className="text-slate-500 uppercase">STATUS</span>
+<span className="uppercase">{getStatusBadge(selectedAsset.status)}</span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Last Heartbeat</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">LAST HEARTBEAT</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedAsset.lastHeartbeat}
 </span>
 </div>

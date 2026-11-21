@@ -127,25 +127,24 @@ const [tasks, setTasks] = useState([]);
 const [selectedTask, setSelectedTask] = useState(null);
 const [loading, setLoading] = useState(false);
 const [detailsLoading, setDetailsLoading] = useState(false);
-const [error, setError] = useState(null);
 const [searchQuery, setSearchQuery] = useState("");
-const [statusFilter, setStatusFilter] = useState("All Status");
+const [statusFilter, setStatusFilter] = useState("ALL STATUS");
 const [currentPage, setCurrentPage] = useState(1);
 const pageSize = 5;
 const tabs = [
 {
 id: "Auto Feeder",
-label: "Auto Feeder",
+label: "AUTO FEEDER",
 logo: autofeederLogo,
 },
 {
 id: "Checktray",
-label: "Checktray",
+label: "CHECKTRAY",
 logo: checktrayLogo,
 },
 {
 id: "Power Monitoring",
-label: "Power Monitoring",
+label: "POWER MONITORING",
 logo: powermonitoringLogo,
 },
 ];
@@ -249,7 +248,6 @@ setDetailsLoading(false);
 const fetchTasks = useCallback(
 async (tabName) => {
 setLoading(true);
-setError(null);
 const endpoints = TAB_ENDPOINTS[tabName] || [`/${tabName}ProcessTable/`];
 const cleanBaseUrl = (BASEURL || "").replace(//+$/, "");
 let success = false;
@@ -440,12 +438,12 @@ pondStr.includes(q) ||
 idStr.includes(q);
 const statusLower = String(task.Status || task.status || "").toLowerCase();
 const matchesStatus =
-statusFilter === "All Status" ||
-(statusFilter === "In Progress"
+statusFilter === "ALL STATUS" ||
+(statusFilter === "IN PROGRESS"
 ? ["in progress", "processing", "pending"].includes(statusLower)
-: statusFilter === "Completed"
+: statusFilter === "COMPLETED"
 ? ["completed", "active"].includes(statusLower)
-: statusFilter === "Failed"
+: statusFilter === "FAILED"
 ? ["failed", "offline"].includes(statusLower)
 : statusLower === statusFilter.toLowerCase());
 return matchesSearch && matchesStatus;
@@ -459,48 +457,49 @@ return filteredTasks.slice(start, start + pageSize);
 }, [filteredTasks, currentPage, pageSize]);
 const getStatusBadge = (status) => {
 const s = String(status || "").toLowerCase();
+const displayStatus = String(status || "UNKNOWN").toUpperCase();
 switch (s) {
 case "in progress":
 case "processing":
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-100">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-100 uppercase">
 <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-{status}
+{displayStatus}
 </span>
 );
 case "completed":
 case "active":
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100 uppercase">
 <span className="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-{status}
+{displayStatus}
 </span>
 );
 case "pending":
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100 uppercase">
 <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-{status}
+{displayStatus}
 </span>
 );
 case "failed":
 case "offline":
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600 border border-rose-100">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-rose-50 text-rose-600 border border-rose-100 uppercase">
 <span className="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
-{status}
+{displayStatus}
 </span>
 );
 default:
 return (
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-600 border border-gray-100">
-{status || "Unknown"}
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gray-50 text-gray-600 border border-gray-100 uppercase">
+{displayStatus}
 </span>
 );
 }
 };
 return (
-<div className="min-h-screen bg-[#f4f7fb] px-6 pt-4 pb-6 lg:px-8 lg:pt-4 lg:pb-8">
+<div className="min-h-screen bg-[#f4f7fb] px-6 pt-4 pb-6 lg:px-8 lg:pt-4 lg:pb-8 uppercase">
 {/* Header /}
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
 <div className="flex items-start gap-4">
@@ -508,11 +507,11 @@ return (
 <i className="bi bi-gear-fill text-3xl"></i>
 </div>
 <div>
-<h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-Process Table
+<h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">
+PROCESS TABLE
 </h1>
-<p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal">
-Monitor operational records across Aqua Farming applications
+<p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal uppercase">
+MONITOR OPERATIONAL RECORDS ACROSS AQUA FARMING APPLICATIONS
 </p>
 </div>
 </div>
@@ -521,15 +520,15 @@ Monitor operational records across Aqua Farming applications
 <button
 onClick={() => fetchTasks(activeTab)}
 disabled={loading}
-className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm transition disabled:opacity-50"
-title="Refresh Tasks"
+className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm transition disabled:opacity-50 uppercase cursor-pointer"
+title="REFRESH TASKS"
 >
 <i
 className={`bi bi-arrow-clockwise text-sm text-black ${
 loading ? "animate-spin" : ""
 }`}
 ></i>
-<span>Refresh</span>
+<span className="uppercase">REFRESH</span>
 </button>
 </div>
 </div>
@@ -543,9 +542,9 @@ key={tab.id}
 onClick={() => {
 setActiveTab(tab.id);
 setCurrentPage(1);
-setStatusFilter("All Status");
+setStatusFilter("ALL STATUS");
 }}
-className={`flex items-center gap-3 px-5 py-3 rounded-xl text-base font-semibold transition-all whitespace-nowrap cursor-pointer ${
+className={`flex items-center gap-3 px-5 py-3 rounded-xl text-base font-semibold transition-all whitespace-nowrap cursor-pointer uppercase ${
 isActive
 ? "bg-blue-600 text-white shadow-md shadow-blue-500/25 border border-blue-600"
 : "bg-white text-slate-700 border border-slate-300 shadow-sm hover:bg-slate-50 hover:border-slate-400 hover:text-slate-900"
@@ -562,7 +561,7 @@ alt={tab.label}
 className="w-full h-full object-contain"
 />
 </div>
-<span className="tracking-tight">{tab.label}</span>
+<span className="tracking-tight uppercase">{tab.label}</span>
 </button>
 );
 })}
@@ -572,11 +571,11 @@ className="w-full h-full object-contain"
 {/* Total Tasks /}
 <div
 onClick={() => {
-setStatusFilter("All Status");
+setStatusFilter("ALL STATUS");
 setCurrentPage(1);
 }}
 className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
-statusFilter === "All Status"
+statusFilter === "ALL STATUS"
 ? "border-blue-400 ring-2 ring-blue-500/20"
 : "border-blue-100/80 hover:border-blue-200"
 }`}
@@ -585,8 +584,8 @@ statusFilter === "All Status"
 <i className="bi bi-play-fill ml-0.5"></i>
 </div>
 <div>
-<p className="text-xs font-medium text-slate-500 mb-0.5">
-Total Tasks
+<p className="text-xs font-medium text-slate-500 mb-0.5 uppercase">
+TOTAL TASKS
 </p>
 <p className="text-2xl font-bold text-slate-900 leading-tight">
 {kpiCounts.total}
@@ -596,11 +595,11 @@ Total Tasks
 {/* In Progress /}
 <div
 onClick={() => {
-setStatusFilter("In Progress");
+setStatusFilter("IN PROGRESS");
 setCurrentPage(1);
 }}
 className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
-statusFilter === "In Progress" || statusFilter === "Processing"
+statusFilter === "IN PROGRESS"
 ? "border-amber-400 ring-2 ring-amber-500/20"
 : "border-blue-100/80 hover:border-amber-200"
 }`}
@@ -609,8 +608,8 @@ statusFilter === "In Progress" || statusFilter === "Processing"
 <i className="bi bi-arrow-repeat"></i>
 </div>
 <div>
-<p className="text-xs font-medium text-slate-500 mb-0.5">
-In Progress
+<p className="text-xs font-medium text-slate-500 mb-0.5 uppercase">
+IN PROGRESS
 </p>
 <p className="text-2xl font-bold text-slate-900 leading-tight">
 {kpiCounts.inProgress}
@@ -620,11 +619,11 @@ In Progress
 {/* Completed /}
 <div
 onClick={() => {
-setStatusFilter("Completed");
+setStatusFilter("COMPLETED");
 setCurrentPage(1);
 }}
 className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
-statusFilter === "Completed"
+statusFilter === "COMPLETED"
 ? "border-emerald-400 ring-2 ring-emerald-500/20"
 : "border-blue-100/80 hover:border-emerald-200"
 }`}
@@ -633,8 +632,8 @@ statusFilter === "Completed"
 <i className="bi bi-check-lg"></i>
 </div>
 <div>
-<p className="text-xs font-medium text-slate-500 mb-0.5">
-Completed
+<p className="text-xs font-medium text-slate-500 mb-0.5 uppercase">
+COMPLETED
 </p>
 <p className="text-2xl font-bold text-slate-900 leading-tight">
 {kpiCounts.completed}
@@ -644,11 +643,11 @@ Completed
 {/* Failed /}
 <div
 onClick={() => {
-setStatusFilter("Failed");
+setStatusFilter("FAILED");
 setCurrentPage(1);
 }}
 className={`bg-white rounded-2xl border p-4 shadow-sm flex items-center gap-3.5 cursor-pointer transition-all hover:shadow-md hover:scale-[1.01] ${
-statusFilter === "Failed"
+statusFilter === "FAILED"
 ? "border-rose-400 ring-2 ring-rose-500/20"
 : "border-blue-100/80 hover:border-rose-200"
 }`}
@@ -657,8 +656,8 @@ statusFilter === "Failed"
 <i className="bi bi-x-lg"></i>
 </div>
 <div>
-<p className="text-xs font-medium text-slate-500 mb-0.5">
-Failed
+<p className="text-xs font-medium text-slate-500 mb-0.5 uppercase">
+FAILED
 </p>
 <p className="text-2xl font-bold text-slate-900 leading-tight">
 {kpiCounts.failed}
@@ -667,7 +666,7 @@ Failed
 </div>
 </div>
 {/* Applications Table Card /}
-<div className="bg-white rounded-2xl border border-blue-100/80 shadow-sm p-5 mb-5">
+<div className="bg-white rounded-2xl border border-blue-100/80 shadow-sm p-5 mb-5 uppercase">
 {/* Card Header with Search and Status Filter /}
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
 <div className="flex items-center gap-2.5">
@@ -678,8 +677,8 @@ alt=""
 className="w-full h-full object-contain"
 />
 </div>
-<h2 className="text-base font-bold text-slate-800">
-Applications — {activeTab}
+<h2 className="text-base font-bold text-slate-800 uppercase">
+APPLICATIONS — {activeTab.toUpperCase()}
 </h2>
 </div>
 <div className="flex items-center gap-3">
@@ -688,13 +687,13 @@ Applications — {activeTab}
 <i className="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
 <input
 type="text"
-placeholder="Search by Device, Pond, Task..."
+placeholder="SEARCH BY DEVICE, POND, TASK..."
 value={searchQuery}
 onChange={(e) => {
 setSearchQuery(e.target.value);
 setCurrentPage(1);
 }}
-className="pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-200 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-500 w-52 sm:w-64 transition"
+className="pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-200 text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-500 w-52 sm:w-64 transition uppercase"
 />
 </div>
 {/* Status Dropdown /}
@@ -705,12 +704,12 @@ onChange={(e) => {
 setStatusFilter(e.target.value);
 setCurrentPage(1);
 }}
-className="appearance-none pl-3 pr-8 py-2 text-sm rounded-lg border border-slate-200 text-slate-700 bg-white font-medium focus:outline-none focus:border-blue-500 cursor-pointer"
+className="appearance-none pl-3 pr-8 py-2 text-sm rounded-lg border border-slate-200 text-slate-700 bg-white font-medium focus:outline-none focus:border-blue-500 cursor-pointer uppercase"
 >
-<option value="All Status">All Status</option>
-<option value="In Progress">In Progress</option>
-<option value="Completed">Completed</option>
-<option value="Failed">Failed</option>
+<option value="ALL STATUS">ALL STATUS</option>
+<option value="IN PROGRESS">IN PROGRESS</option>
+<option value="COMPLETED">COMPLETED</option>
+<option value="FAILED">FAILED</option>
 </select>
 <i className="bi bi-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
 </div>
@@ -718,25 +717,25 @@ className="appearance-none pl-3 pr-8 py-2 text-sm rounded-lg border border-slate
 </div>
 {/* Table /}
 <div className="overflow-x-auto">
-<table className="w-full text-left border-collapse">
+<table className="w-full text-left border-collapse uppercase">
 <thead>
 <tr className="border-b border-slate-200">
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Task ID</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Device</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Pond</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Cycles</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Schedule Date</th>
-<th className="py-2.5 px-3.5 text-black font-semibold text-sm">Status</th>
-<th className="py-2.5 px-3.5 text-center text-black font-semibold text-sm">Actions</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">TASK ID</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">DEVICE</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">POND</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">CYCLES</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">SCHEDULE DATE</th>
+<th className="py-2.5 px-3.5 text-black font-semibold text-sm uppercase">STATUS</th>
+<th className="py-2.5 px-3.5 text-center text-black font-semibold text-sm uppercase">ACTIONS</th>
 </tr>
 </thead>
 <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
 {loading ? (
 <tr>
-<td colSpan="7" className="text-center py-8 text-slate-500 text-sm">
+<td colSpan="7" className="text-center py-8 text-slate-500 text-sm uppercase">
 <div className="inline-flex items-center gap-2">
 <i className="bi bi-arrow-clockwise text-blue-600 text-lg animate-spin"></i>
-<span>Loading {activeTab} tasks...</span>
+<span className="uppercase">LOADING {activeTab.toUpperCase()} TASKS...</span>
 </div>
 </td>
 </tr>
@@ -755,14 +754,14 @@ className={`hover:bg-blue-50/40 transition-colors cursor-pointer ${
 isSelected ? "bg-blue-50/50 font-medium" : ""
 }`}
 >
-<td className="py-2.5 px-3.5 font-semibold text-slate-900">
+<td className="py-2.5 px-3.5 font-semibold text-slate-900 uppercase">
 {task.Task_ID ?? task.task_id ?? task.taskId ?? task.id}
 </td>
-<td className="py-2.5 px-3.5">{task.device || task.Device || task.device_name || task.device_id || "-"}</td>
-<td className="py-2.5 px-3.5">{task.pond || task.Pond || task.pond_id || "-"}</td>
-<td className="py-2.5 px-3.5">{task.cycles ?? 1}</td>
-<td className="py-2.5 px-3.5">{task.scheduleDate || task.schedule_date || "-"}</td>
-<td className="py-2.5 px-3.5">{getStatusBadge(task.status || task.Status)}</td>
+<td className="py-2.5 px-3.5 uppercase">{task.device || task.Device || task.device_name || task.device_id || "-"}</td>
+<td className="py-2.5 px-3.5 uppercase">{task.pond || task.Pond || task.pond_id || "-"}</td>
+<td className="py-2.5 px-3.5 uppercase">{task.cycles ?? 1}</td>
+<td className="py-2.5 px-3.5 uppercase">{task.scheduleDate || task.schedule_date || "-"}</td>
+<td className="py-2.5 px-3.5 uppercase">{getStatusBadge(task.status || task.Status)}</td>
 <td className="py-2.5 px-3.5 text-center">
 <button
 onClick={(e) => {
@@ -774,7 +773,7 @@ isSelected
 ? "bg-blue-600 text-white shadow-sm"
 : "bg-blue-50 hover:bg-blue-100 text-blue-500 hover:text-blue-700"
 }`}
-title="View Details"
+title="VIEW DETAILS"
 >
 {detailsLoading && isSelected ? (
 <i className="bi bi-arrow-clockwise text-xs animate-spin"></i>
@@ -788,8 +787,8 @@ title="View Details"
 })
 ) : (
 <tr>
-<td colSpan="7" className="text-center py-8 text-slate-400 text-sm">
-No records found for {activeTab}
+<td colSpan="7" className="text-center py-8 text-slate-400 text-sm uppercase">
+NO RECORDS FOUND FOR {activeTab.toUpperCase()}
 </td>
 </tr>
 )}
@@ -798,20 +797,20 @@ No records found for {activeTab}
 </div>
 {/* Table Footer / Pagination /}
 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3.5 border-t border-slate-100 mt-2">
-<p className="text-sm text-slate-500">
-Showing{" "}
+<p className="text-sm text-slate-500 uppercase">
+SHOWING{" "}
 {filteredTasks.length === 0
 ? 0
 : (currentPage - 1) * pageSize + 1}
-–{Math.min(currentPage * pageSize, filteredTasks.length)} of{" "}
-{filteredTasks.length} records
+–{Math.min(currentPage * pageSize, filteredTasks.length)} OF{" "}
+{filteredTasks.length} RECORDS
 </p>
 <div className="flex items-center gap-1.5">
 <button
 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
 disabled={currentPage === 1}
-className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition"
-title="Previous Page"
+className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition uppercase"
+title="PREVIOUS PAGE"
 >
 <i className="bi bi-chevron-left text-[10px]"></i>
 </button>
@@ -820,7 +819,7 @@ title="Previous Page"
 <button
 key={pageNum}
 onClick={() => setCurrentPage(pageNum)}
-className={`w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center transition ${
+className={`w-7 h-7 rounded-md text-xs font-medium flex items-center justify-center transition uppercase ${
 currentPage === pageNum
 ? "bg-blue-600 text-white shadow-sm"
 : "border border-slate-200 text-slate-700 hover:bg-slate-50"
@@ -833,8 +832,8 @@ currentPage === pageNum
 <button
 onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
 disabled={currentPage >= totalPages}
-className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition"
-title="Next Page"
+className="w-7 h-7 rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center justify-center text-xs disabled:opacity-40 transition uppercase"
+title="NEXT PAGE"
 >
 <i className="bi bi-chevron-right text-[10px]"></i>
 </button>
@@ -843,7 +842,7 @@ title="Next Page"
 </div>
 {/* Task Details Card /}
 {selectedTask ? (
-<div className="bg-[#f0f6ff]/70 border border-blue-100 rounded-2xl p-5 shadow-sm">
+<div className="bg-[#f0f6ff]/70 border border-blue-100 rounded-2xl p-5 shadow-sm uppercase">
 <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
 <div className="flex items-center gap-2.5">
 <div className="w-7 h-7 rounded-lg bg-white border border-blue-100 p-1 flex items-center justify-center shadow-xs flex-shrink-0">
@@ -853,43 +852,43 @@ alt="Logo"
 className="w-full h-full object-contain"
 />
 </div>
-<h3 className="font-bold text-slate-800 text-base">
-Task Details — {selectedTask.category || activeTab}
+<h3 className="font-bold text-slate-800 text-base uppercase">
+TASK DETAILS — {(selectedTask.category || activeTab).toUpperCase()}
 </h3>
 {detailsLoading && (
-<span className="inline-flex items-center gap-1 text-xs font-normal text-blue-600">
+<span className="inline-flex items-center gap-1 text-xs font-normal text-blue-600 uppercase">
 <i className="bi bi-arrow-clockwise animate-spin text-xs"></i>
-<span>Updating...</span>
+<span>UPDATING...</span>
 </span>
 )}
 </div>
-<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+<span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 uppercase">
 <img
 src={getCategoryLogo(selectedTask.category || activeTab)}
 alt=""
 className="w-3.5 h-3.5 object-contain"
 />
-{selectedTask.Device || selectedTask.device}
+<span className="uppercase">{selectedTask.Device || selectedTask.device}</span>
 </span>
 </div>
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 uppercase">
 {/* Column 1 /}
 <div className="space-y-3">
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Task ID</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">TASK ID</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedTask.Task_ID ?? selectedTask.task_id ?? selectedTask.id}
 </span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Device</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">DEVICE</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedTask.Device || selectedTask.device}
 </span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Pond</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">POND</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedTask.Pond || selectedTask.pond}
 </span>
 </div>
@@ -897,14 +896,14 @@ className="w-3.5 h-3.5 object-contain"
 {/* Column 2 /}
 <div className="space-y-3 md:border-l md:border-slate-200/80 md:pl-6">
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Cycles</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">CYCLES</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedTask.cycles ?? "-"}
 </span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Schedule Date</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">SCHEDULE DATE</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedTask.schedule_date || selectedTask.scheduleDate || "-"}
 </span>
 </div>
@@ -912,18 +911,18 @@ className="w-3.5 h-3.5 object-contain"
 {/* Column 3 /}
 <div className="space-y-3 md:border-l md:border-slate-200/80 md:pl-6">
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Status</span>
-<span>{getStatusBadge(selectedTask.Status || selectedTask.status)}</span>
+<span className="text-slate-500 uppercase">STATUS</span>
+<span className="uppercase">{getStatusBadge(selectedTask.Status || selectedTask.status)}</span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Category</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">CATEGORY</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedTask.category || activeTab}
 </span>
 </div>
 <div className="flex items-center justify-between text-sm">
-<span className="text-slate-500">Last Updated</span>
-<span className="font-semibold text-slate-900">
+<span className="text-slate-500 uppercase">LAST UPDATED</span>
+<span className="font-semibold text-slate-900 uppercase">
 {selectedTask.last_updated || selectedTask.lastUpdated || selectedTask.schedule_date || selectedTask.scheduleDate || "-"}
 </span>
 </div>
@@ -931,13 +930,15 @@ className="w-3.5 h-3.5 object-contain"
 </div>
 </div>
 ) : (
-<div className="bg-[#f0f6ff]/70 border border-blue-100 rounded-2xl p-6 text-center shadow-sm">
+<div className="bg-[#f0f6ff]/70 border border-blue-100 rounded-2xl p-6 text-center shadow-sm uppercase">
 <i className="bi bi-info-circle text-blue-400 text-2xl mb-1 inline-block"></i>
-<p className="text-sm font-medium text-slate-700">No task selected</p>
-<p className="text-xs text-slate-500 mt-0.5">
-Select a record from the table above to view its details.
+<p className="text-sm font-medium text-slate-700 uppercase">NO TASK SELECTED</p>
+<p className="text-xs text-slate-500 mt-0.5 uppercase">
+SELECT A RECORD FROM THE TABLE ABOVE TO VIEW ITS DETAILS.
 </p>
 </div>
 )}
 </div>
 );
+};
+export default Processtable;
